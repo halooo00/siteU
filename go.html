@@ -1,0 +1,221 @@
+<!doctype html>
+  
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My PDF Viewer</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script
+    src="http://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js">
+  </script>
+ 
+  <style>
+      #canvas_container {
+          width: 350px;
+          height: 450px;
+          overflow: auto;
+      }
+ 
+ #go_previous{
+   background-color: #2596be;
+   color: snow;
+   border-radius: 5px;
+   border: none;
+   width: 70px;
+   height: 30px;
+   margin-left: 8px;
+   margin-right: 5px;
+ }
+ 
+ 
+ 
+ #go_next{
+   
+   background-color: #2596be;
+   color: snow;
+   border-radius: 5px;
+   border: none;
+   width: 70px;
+   height: 30px;
+   margin-left: 5px;
+   margin-top: 19px;
+   
+ }
+ 
+ #current_page{
+   background-color: #2596be;
+   border: none;
+   border-radius: 5px;
+   height: 20px;
+   margin-top: 0px;
+   color: snow;
+ }
+ #zoom_out{
+   background-color: #2596be;
+   border: none;
+   border-radius: 5px;
+   height: 25px;
+   width: 25px;
+   margin-top: 10px;
+   margin-left: 30px;
+   color: snow;
+   padding: 2px;
+   
+ }
+  #zoom_in{
+   background-color: #2596be;
+   border: none;
+   border-radius: 5px;
+   height: 25px;
+   width: 25px;
+   margin-top: 10px;
+   margin-left: 150px;
+   color: snow;
+   padding: 2px;
+   
+ }
+ #pdf_renderer{
+   margin-top: 20px;
+   
+ }
+ body{
+   background-color: #222222;
+   
+ }
+ 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 700,
+  'GRAD' 1,
+  'opsz' 48
+ 
+}
+
+      #canvas_container {
+        background: #333;
+        text-align: center;
+        border: solid 3px;
+      }
+  </style>
+</head>
+<body>
+     <div id="my_pdf_viewer">
+        <div id="canvas_container">
+            <canvas id="pdf_renderer"></canvas>
+        </div>
+ 
+        <div id="navigation_controls">
+            <button id="go_previous">
+              <span class="material-symbols-outlined">
+arrow_back_ios
+</span>
+            </button>
+            <input id="current_page" value="1" type="number"/>
+            <button id="go_next">
+              <span class="material-symbols-outlined">
+arrow_forward_ios
+</span>
+            </button>
+        </div>
+ 
+        <div id="zoom_controls">  
+            <button id="zoom_in">
+              
+              <span class="material-symbols-outlined">
+zoom_in
+</span>
+              
+            </button>
+            <button id="zoom_out">
+              
+              
+              <span class="material-symbols-outlined">
+zoom_out
+</span>
+            </button>
+        </div>
+    </div>
+ 
+    <script>
+        var myState = {
+            pdf: null,
+            currentPage: 1,
+            zoom: 0.5
+        }
+      
+        pdfjsLib.getDocument('r.pdf').then((pdf) => {
+      
+            myState.pdf = pdf;
+            render();
+ 
+        });
+ 
+        function render() {
+            myState.pdf.getPage(myState.currentPage).then((page) => {
+          
+                var canvas = document.getElementById("pdf_renderer");
+                var ctx = canvas.getContext('2d');
+      
+                var viewport = page.getViewport(myState.zoom);
+ 
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+          
+                page.render({
+                    canvasContext: ctx,
+                    viewport: viewport
+                });
+            });
+        }
+ 
+        document.getElementById('go_previous').addEventListener('click', (e) => {
+            if(myState.pdf == null || myState.currentPage == 1) 
+              return;
+            myState.currentPage -= 1;
+            document.getElementById("current_page").value = myState.currentPage;
+            render();
+        });
+ 
+        document.getElementById('go_next').addEventListener('click', (e) => {
+            if(myState.pdf == null || myState.currentPage > myState.pdf._pdfInfo.numPages) 
+               return;
+            myState.currentPage += 1;
+            document.getElementById("current_page").value = myState.currentPage;
+            render();
+        });
+ 
+        document.getElementById('current_page').addEventListener('keypress', (e) => {
+            if(myState.pdf == null) return;
+          
+            // Get key code
+            var code = (e.keyCode ? e.keyCode : e.which);
+          
+            // If key code matches that of the Enter key
+            if(code == 13) {
+                var desiredPage = 
+                document.getElementById('current_page').valueAsNumber;
+                                  
+                if(desiredPage >= 1 && desiredPage <= myState.pdf._pdfInfo.numPages) {
+                    myState.currentPage = desiredPage;
+                    document.getElementById("current_page").value = desiredPage;
+                    render();
+                }
+            }
+        });
+ 
+        document.getElementById('zoom_in').addEventListener('click', (e) => {
+            if(myState.pdf == null) return;
+            myState.zoom += 0.5;
+            render();
+        });
+ 
+        document.getElementById('zoom_out').addEventListener('click', (e) => {
+            if(myState.pdf == null) return;
+            myState.zoom -= 0.5;
+            render();
+        });
+    </script>
+</body>
+</html>

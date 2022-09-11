@@ -1,0 +1,94 @@
+ 
+ 
+  body{
+    font-family: 'Roboto', sans-serif;
+  }
+   nav{
+     background:#222222;
+     margin:0;
+     padding-top:18px;
+     text-align: center;
+     height:50px;
+     position: fixed;
+     top: 0;
+     right: 0;
+     left: 0;
+   }
+    *{
+      margin: 0;
+    }
+    nav a {
+      margin: 30px;
+      color: snow;
+      text-decoration:none;
+      margin-top:1px;
+      font-size: 24px;
+    }
+    
+    
+    .card1{
+      background:#222222;
+      text-align: center;
+      color: snow;
+      margin:23px;
+      padding: 15px;
+      border-radius: 12px;
+      width: 80%;
+    }
+    
+    
+    
+    
+     .card2{
+      background:#222222;
+      text-align: center;
+      color: snow;
+      margin:23px;
+      padding: 15px;
+      border-radius: 12px;
+      margin-top: 72px;
+      width: 80%;
+    }
+    #d1{
+      font-size:16px;
+      color: #73777B;
+    }
+    
+    #l1{
+      font-size: 14px;
+     text-decoration: none;
+    }
+    #po:hover{
+      color:#67FF8B;
+      text-decoration: underline ;
+    }
+    #po{
+      text-decoration: none;
+       color:snow;
+    }
+    .card1:hover{
+      box-shadow: 10px 10px 7px rgba(52,57,61,0.5)
+     
+    }
+    .card2:hover{
+      box-shadow: 10px 10px 7px rgba(52,57,61,0.5)
+     
+    }
+    .us{
+      color:#67FF8B;
+    
+    }
+    
+    #po1{
+      text-decoration: none;
+       color:snow;
+       margin-right: 24px;
+       margin-left: 2px;
+       position: relative;
+       top: 9px;
+       align-content: center;
+    }
+  
+  
+
+  
